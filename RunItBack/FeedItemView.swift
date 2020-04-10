@@ -12,7 +12,8 @@ import MapKit
 
 class FeedItemView: UITableViewCell {
     @IBOutlet weak var locationMap: MKMapView!
-    @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var username: UIButton!
+    @IBOutlet weak var title: UILabel!
     @IBOutlet weak var dateTime: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
+    var feedItem = FeedItem()
 }

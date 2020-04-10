@@ -15,6 +15,7 @@
 		E27B3B70243D3B5B00EF5B57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E27B3B6E243D3B5B00EF5B57 /* LaunchScreen.storyboard */; };
 		E2DE8474243D499200630B98 /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DE8473243D499200630B98 /* FeedTableViewController.swift */; };
 		E2DE847A243D768D00630B98 /* FeedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DE8479243D768D00630B98 /* FeedItemView.swift */; };
+		E2DE847E244027B800630B98 /* FeedDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DE847D244027B800630B98 /* FeedDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		E27B3B71243D3B5B00EF5B57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2DE8473243D499200630B98 /* FeedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewController.swift; sourceTree = "<group>"; };
 		E2DE8479243D768D00630B98 /* FeedItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemView.swift; sourceTree = "<group>"; };
+		E2DE847D244027B800630B98 /* FeedDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				E27B3B71243D3B5B00EF5B57 /* Info.plist */,
 				E2DE8473243D499200630B98 /* FeedTableViewController.swift */,
 				E2DE8479243D768D00630B98 /* FeedItemView.swift */,
+				E2DE847D244027B800630B98 /* FeedDetailsViewController.swift */,
 			);
 			path = RunItBack;
 			sourceTree = "<group>";
@@ -147,6 +150,7 @@
 				E2DE847A243D768D00630B98 /* FeedItemView.swift in Sources */,
 				E27B3B68243D3B4F00EF5B57 /* ViewController.swift in Sources */,
 				E27B3B64243D3B4F00EF5B57 /* AppDelegate.swift in Sources */,
+				E2DE847E244027B800630B98 /* FeedDetailsViewController.swift in Sources */,
 				E2DE8474243D499200630B98 /* FeedTableViewController.swift in Sources */,
 				E27B3B66243D3B4F00EF5B57 /* SceneDelegate.swift in Sources */,
 			);
