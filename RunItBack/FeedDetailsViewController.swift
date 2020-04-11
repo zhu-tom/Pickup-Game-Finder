@@ -8,10 +8,11 @@
 
 import Foundation
 import UIKit
+import MapKit
 
 class FeedDetailsViewController: UIViewController {
     var feedItem = FeedItem()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
     }

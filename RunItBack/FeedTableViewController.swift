@@ -11,13 +11,38 @@ import Foundation
 import MapKit
 import CoreLocation
 
-struct FeedItem {
+class FeedItem {
     var id: Int = Int()
     var title: String = String()
     var notes: String = String()
     var players: [Any] = [Any]()
     var dateTime: Date = Date()
-    var location: (lat:Double, lon:Double) = (Double(), Double())
+    var locationCL: CLLocation = CLLocation()
+    var locationCoord: CLLocationCoordinate2D = CLLocationCoordinate2D()
+    var region: MKCoordinateRegion = MKCoordinateRegion()
+    var annotation: MKPlacemark? = nil
+    
+    init() {
+        
+    }
+    
+    init(id: Int, title: String, notes: String, players: [Any], dateTime: Date, location: (lat: Double, lon: Double)) {
+        self.id = id
+        self.title = title
+        self.notes = notes
+        self.players = players
+        self.dateTime = dateTime
+        self.locationCoord = CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon)
+        self.locationCL = CLLocation(latitude: location.lat, longitude: location.lon)
+        self.region = MKCoordinateRegion(center: self.locationCoord, latitudinalMeters: CLLocationDistance(exactly: 250)!, longitudinalMeters: CLLocationDistance(exactly: 250)!)
+        CLGeocoder().reverseGeocodeLocation(self.locationCL, completionHandler: {(placemarks, error) -> Void in
+            
+            if let placemark = placemarks?[0] {
+                self.annotation = MKPlacemark(placemark: placemark)
+            }
+            
+        })
+    }
 }
 
 class FeedTableViewController: UITableViewController, CLLocationManagerDelegate {
@@ -100,29 +125,25 @@ class FeedTableViewController: UITableViewController, CLLocationManagerDelegate 
         dateFormatter.timeZone = TimeZone.current
         cell.dateTime.text = dateFormatter.string(from: currItem.dateTime)
 
-        let locationCoord = CLLocationCoordinate2D(latitude: currItem.location.lat, longitude: currItem.location.lon)
-        let locationCL = CLLocation(latitude: currItem.location.lat, longitude: currItem.location.lon)
-        //cell.locationMap.setCenter(locationCoord, animated: false)
-        cell.locationMap.setRegion(MKCoordinateRegion(center: locationCoord, latitudinalMeters: CLLocationDistance(exactly: 2500)!, longitudinalMeters: CLLocationDistance(exactly: 2500)!), animated: false)
-//        let annotation = MKPointAnnotation()
-//        annotation.coordinate = locationCoord
-//        cell.locationMap.addAnnotation(annotation)
-        CLGeocoder().reverseGeocodeLocation(locationCL, completionHandler: {(placemarks, error) -> Void in
-            
-            if let placemark = placemarks?[0] {
-                cell.locationMap.addAnnotation(MKPlacemark(placemark: placemark))
-                if CLLocationManager.locationServicesEnabled(), let loc = self.locationManager.location {
-                    cell.locationLabel.text = self.distFormatter.string(fromDistance: locationCL.distance(from: loc))
-                } else {
-                    cell.locationLabel.text = "Enable Location Services"
-                }
-                
-            }
-            
-        })
+        cell.locationMap.setRegion(currItem.region, animated: false)
+
+        if let annotation = currItem.annotation {
+            cell.locationMap.addAnnotation(annotation)
+        }
+        
+        cell.locationLabel.text = getDistance(to: currItem.locationCL)
+        
         cell.title.text = currItem.title
         cell.feedItem = currItem
         return cell
+    }
+    
+    func getDistance(to locationCL: CLLocation) -> String {
+        if CLLocationManager.locationServicesEnabled(), let loc = self.locationManager.location {
+            return self.distFormatter.string(fromDistance: locationCL.distance(from: loc))
+        } else {
+            return "Enable Location Services"
+        }
     }
 
     // MARK: - Navigation
@@ -134,7 +155,18 @@ class FeedTableViewController: UITableViewController, CLLocationManagerDelegate 
         
         if segue.destination is FeedDetailsViewController && sender is FeedItemView {
             let vc = segue.destination as! FeedDetailsViewController
-            vc.feedItem = (sender as! FeedItemView).feedItem
+            let senderItem = (sender as! FeedItemView).feedItem
+            vc.feedItem = senderItem
+            let view = vc.view as! FeedDetailsView
+            view.titleLabel.text = senderItem.title
+            view.notesLabel.text = senderItem.notes
+            view.distanceLabel.text = getDistance(to: senderItem.locationCL)
+            view.dateLabel.text = dateFormatter.string(from: senderItem.dateTime)
+            //view.locationMap.setRegion(MKCoordinateRegion(center: (sender as! FeedItemView).locationMap.centerCoordinate, latitudinalMeters: 2500, longitudinalMeters: 2500), animated: false)
+            view.locationMap.setRegion(senderItem.region, animated: false)
+            if let annotation = senderItem.annotation {
+                view.locationMap.addAnnotation(annotation)
+            }
         }
         
         
